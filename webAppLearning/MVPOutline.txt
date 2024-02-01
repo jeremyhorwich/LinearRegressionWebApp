@@ -1,0 +1,14 @@
+Features needed for minimum viable product:
+
+- Web app created using flask from which users can interact with the program for the whole of the workflow
+	- Upload button
+		- Preview of uploaded spreadsheet
+	- Options (% of data used for training vs test, cycles ran, etc.)
+- Can upload excel spreadsheet with data
+	- Program can parse data
+- Program can run linear regression on data
+	- State accuracy/confidence (using separated test/training data)
+	- Output equation of line of best fit
+	- Make prediction
+- Plot data before and after
+	- Plot prediction
