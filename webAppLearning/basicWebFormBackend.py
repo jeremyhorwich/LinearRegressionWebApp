@@ -2,6 +2,11 @@ from flask import Flask, redirect, url_for, render_template, request
 
 app = Flask(__name__)
 
+@app.route("/")
+@app.route("/index")
+def index():
+    return "<p>Index</p>"
+
 @app.route("/login", methods=["POST","GET"])
 def login():
     if request.method == "POST":
@@ -10,6 +15,12 @@ def login():
     else:
         return render_template("htmlBasicForm.html")
 
-@app.route("/<usr>")
+@app.route("/login/<usr>")
 def user(usr):
-    return f"<h1>{usr}</h1>"
+    display=loginLogic(usr)
+    return display
+
+def loginLogic(user):
+    if user=="Jeremy Horwich":
+        return "<h1>Welcome, Jeremy</h1>"
+    return f"<h1>{user}</h1>"
