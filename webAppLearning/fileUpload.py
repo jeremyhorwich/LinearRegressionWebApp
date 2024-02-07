@@ -25,21 +25,8 @@ def uploadFile():
             return redirect("/fileuploaderror")
         else:
             return render_template("fileContent.html",text=file.read())
-            # with open(file,"r") as f:
-            #     return render_template("fileContent.html",text=f.read())
-            # return redirect("/Success")
-            # filename = secure_filename(file.filename)
-            # file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-            # return redirect(url_for("download_file", name=filename))
         
 @app.route("/fileuploaderror")
 def displayUploadError():
     return "<p>File Error</p>"
 
-# @app.route("/Success")
-# def displayFile():
-#     if "upload" not in request.files:
-#         return redirect("htmlBasicForm.html")
-#     file = request.files["upload"]
-#     with open(file,"r") as f:
-#         return f"<p>{f.read()}</p>"
