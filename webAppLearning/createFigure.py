@@ -1,5 +1,9 @@
 import matplotlib.pyplot as plt
+from matplotlib import use as backendUse
 from io import BytesIO
+import base64
+
+backendUse("agg")
 
 def createFigure():
     x = [1,2,3,4]
@@ -8,6 +12,7 @@ def createFigure():
 
     stream = BytesIO()
     plt.savefig(stream, format="png")
-    plt.close()
+    plt.close()                         #Without this we have memory leaks
+    figure = base64.b64encode(stream.getbuffer()).decode("ascii")
 
-    return stream
+    return figure
