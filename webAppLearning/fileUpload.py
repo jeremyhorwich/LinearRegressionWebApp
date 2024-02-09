@@ -24,7 +24,7 @@ def uploadFile():
         if file.filename == "":
             return redirect("/fileuploaderror")
         else:
-            return render_template("fileContent.html",text=file.read())
+            return file.read()
         
 @app.route("/fileuploaderror")
 def displayUploadError():
