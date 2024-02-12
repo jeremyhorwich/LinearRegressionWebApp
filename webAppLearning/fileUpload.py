@@ -11,17 +11,14 @@ def index():
 @app.route("/upload", methods=["GET","POST"])
 def uploadFile():
     if request.method == "GET":
-        return render_template("uploadFileForm.html")
+        return render_template("uploadFile.html")
     if request.method == "POST":
-        if "upload" not in request.files:
-            return redirect("htmlBasicForm.html")
-        file = request.files["upload"]
-        if file.filename == "":
-            return redirect("/fileuploaderror")
+        if ("upload" not in request.files) or (request.files["upload"].filename == ""):
+            return redirect("/fileUploadError")
         else:
-            return file.read()
+            return request.files["upload"].read()
         
-@app.route("/fileuploaderror")
+@app.route("/fileUploadError")
 def displayUploadError():
     return "<p>File Error</p>"
 
