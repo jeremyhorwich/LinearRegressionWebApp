@@ -18,7 +18,7 @@ def trainModel(data,learningRate,iterations):
 
         dTheta = (1/m)*np.dot(xPrime.T, yHat - Y)
         theta = theta - learningRate*dTheta
-        if i == iterations:
+        if i == (iterations - 1):
             cost = (1/(2*m))*np.sum(np.square(yHat - Y))
 
     return theta, cost
