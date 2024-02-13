@@ -1,8 +1,8 @@
 import pandas as pd
 import numpy as np
 
-def parseData(buffer): 
-    dataset =  pd.read_csv(buffer,usecols=['x','y']).values       #Will have to update if we want to handle different column names
+def parseData(filepath): 
+    dataset =  pd.read_csv(filepath,usecols=['x','y']).values       #Will have to update if we want to handle different column names
     return(dataset)
 
 def trainModel(data,learningRate,iterations):

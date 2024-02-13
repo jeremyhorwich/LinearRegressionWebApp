@@ -5,12 +5,16 @@ import base64
 
 setBackend("agg")
 
-def createFigure():
-    x = [1,2,3,4]
-    y = [4,1,3,2]
+def createFigure(data, theta=None):
+    x = data[:,0]
+    y = data[:,1]
     fig = Figure()                  #Avoiding PyPlot because it's prone to memory leaks
     ax = fig.subplots()
     ax.scatter(x,y)
+
+    if theta is not None:
+        print(theta)
+        ax.axline((0,theta.item(0)), slope = theta.item(1), color="r")
 
     stream = BytesIO()
     fig.savefig(stream, format="png")
