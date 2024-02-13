@@ -13,7 +13,6 @@ def createFigure(data, theta=None):
     ax.scatter(x,y)
 
     if theta is not None:
-        print(theta)
         ax.axline((0,theta.item(0)), slope = theta.item(1), color="r")
 
     stream = BytesIO()
