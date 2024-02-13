@@ -7,8 +7,6 @@ Features needed for minimum viable product:
 - Can upload excel spreadsheet with data
 	- Program can parse data
 - Program can run linear regression on data
-	- State accuracy/confidence (using separated test/training data)
-	- Output equation of line of best fit
-	- Make prediction
+	- State accuracy/confidence
 - Plot data before and after
 	- Plot prediction
