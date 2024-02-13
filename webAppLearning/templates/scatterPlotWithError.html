@@ -6,7 +6,8 @@
     <title>Scatter Plot</title>
 </head>
 <body>
-    <img src="data:image/png;base64,{{ image }}"/><br>
+    <img src="data:image/png;base64,{{ image }}"/>
+    <p style="color:red">There was a problem with either your learning rate or iterations</p>
     <form method="POST">
         <label for="learningRate">Learning Rate (between 0.0001 and 0.00001): </label><br>
         <input type="text" name="learningRate" placeholder="0.00005"><br>
