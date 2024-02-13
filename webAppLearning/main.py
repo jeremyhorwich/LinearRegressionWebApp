@@ -7,8 +7,6 @@ app = Flask(__name__)
 UPLOAD_FOLDER = "tmp"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
-learningRate, iterations = 0.00005,100
-
 @app.route("/")
 @app.route("/index")
 def index():
@@ -32,31 +30,51 @@ def uploadFile():
             upload = request.files["upload"]
             #Saving to tmp folder because files may be too big for session variables
             upload.save(os.path.join(app.config["UPLOAD_FOLDER"], upload.filename))
-            return redirect(url_for("showFileVisualization", filename=upload.filename))
+            return redirect(url_for("showFileVisualization", filename=upload.filename, errorReceived=False))
                 
 @app.route("/fileUploadError")
 def displayUploadError():
     return "<p>File Error</p>"
 
-@app.route("/fileUploadSuccess/<filename>", methods=["GET","POST"])
-def showFileVisualization(filename):
+@app.route("/fileUploadSuccess/", methods=["GET","POST"])
+def showFileVisualization():
     if request.method == "GET":
+        query = request.args.to_dict()
+        filename=query["filename"]
+        errorReceived=query["errorReceived"]
+
         data = da.parseData(UPLOAD_FOLDER + "/" + filename)
         figure = createFigure(data)
-        return render_template("imgDisplay.html", image=figure)
+        if errorReceived == "True":         #Must check against string since we are getting errorReceived as a query parameter
+            return render_template("scatterPlotWithError.html", image=figure)
+        return render_template("scatterPlotDisplay.html", image=figure)
+
     if request.method == "POST":
-        #return "<p>Don't give me an error please</p>"
-        return redirect(url_for("performLinearRegression",filename=filename))
+        query = request.args.to_dict()
+        filename=query["filename"]
+        
+        learningRate = request.form.get("learningRate",type=float)
+        if (learningRate < 0.00001) or (learningRate > 0.0001):
+            return redirect(url_for("showFileVisualization", filename=filename, errorReceived=True))
+        iterations = request.form.get("iterations",type=int)
+        if (iterations < 50) or (iterations > 500):
+            return redirect(url_for("showFileVisualization", filename=filename, errorReceived=True))
+        return redirect(url_for("performLinearRegression",filename=filename,learningRate=learningRate,iterations=iterations))
     
-@app.route("/fileUploadSuccess/linearRegression/<filename>")
-def performLinearRegression(filename):
-    data = da.parseData(UPLOAD_FOLDER + "/" + filename)     #TODO: Pass parsed data through? Doing this twice feels silly
-    theta = da.trainModel(data,learningRate,iterations)     #TODO: User selection for learningRate and iterations
-    figure = createFigure(data,theta)                       #TODO: Doing this a second time feels silly, too
-    if os.path.exists(UPLOAD_FOLDER + "/" + filename):
-        os.remove(UPLOAD_FOLDER + "/" + filename)
-    return render_template("imgDisplay.html", image=figure)     #TODO: Spit out image regarding confidence
+@app.route("/fileUploadSuccess/linearRegression/", methods=["GET","POST"])
+def performLinearRegression():
+    if request.method == "GET":
+        query=request.args.to_dict()
+        filename=query["filename"]
+        learningRate = float(query["learningRate"])
+        iterations = int(query["iterations"])
 
-
-    #Show the line of best fit
-    #Spit out information regarding confidence
+        data = da.parseData(UPLOAD_FOLDER + "/" + filename)     #TODO: Pass parsed data through? Doing this twice feels silly
+        theta, cost = da.trainModel(data,learningRate,iterations)
+        figure = createFigure(data,theta)                       #TODO: Doing this a second time feels silly, too
+        #Clean up the tmp folder
+        if os.path.exists(UPLOAD_FOLDER + "/" + filename):
+            os.remove(UPLOAD_FOLDER + "/" + filename)
+        return render_template("completedRegressionDisplay.html", image=figure, cost=cost)
+    if request.method == "POST":
+        return redirect("/")
