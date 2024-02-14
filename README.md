@@ -11,6 +11,7 @@ Instructions to run:
 1. Download the project
 2. In a terminal session, change working directory to the project folder and activate the virtual environment (learningEnv)
 3. In terminal, run "flask -app main run"
+   
 --
 
 Possible future improvements to the application (this is not an exhaustive list)
