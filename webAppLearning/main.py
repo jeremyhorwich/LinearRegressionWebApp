@@ -54,11 +54,15 @@ def showFileVisualization():
         filename=query["filename"]
         
         learningRate = request.form.get("learningRate",type=float)
+        iterations = request.form.get("iterations",type=int)
+
+        if (learningRate is None) or (iterations is None):
+            return redirect(url_for("showFileVisualization", filename=filename, errorReceived=True))
         if (learningRate < 0.00001) or (learningRate > 0.0001):
             return redirect(url_for("showFileVisualization", filename=filename, errorReceived=True))
-        iterations = request.form.get("iterations",type=int)
         if (iterations < 50) or (iterations > 500):
             return redirect(url_for("showFileVisualization", filename=filename, errorReceived=True))
+        
         return redirect(url_for("performLinearRegression",filename=filename,learningRate=learningRate,iterations=iterations))
     
 @app.route("/fileUploadSuccess/linearRegression/", methods=["GET","POST"])
