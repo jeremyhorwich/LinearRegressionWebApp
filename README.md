@@ -6,6 +6,7 @@ All Python scripts necessary to run the program are in the root folder of the pr
 All HTML forms are in /templates. 
 
 --
+
 Instructions to run:
 
 1. Download the project
