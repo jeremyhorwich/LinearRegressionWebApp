@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 def parseData(filepath): 
-    dataset =  pd.read_csv(filepath,usecols=['x','y']).values       #TODO: Handle different column names
+    dataset =  pd.read_csv(filepath).values
     return(dataset)
 
 def trainModel(data,learningRate,iterations):
