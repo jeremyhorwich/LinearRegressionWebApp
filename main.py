@@ -1,5 +1,5 @@
 from flask import Flask, redirect, url_for, render_template, request
-from createFigure import createFigure
+from createFigure import create_figure
 import dataAnalysis as da
 import os
 
@@ -44,7 +44,7 @@ def showFileVisualization():
         errorReceived=query["errorReceived"]
 
         data = da.parseData(UPLOAD_FOLDER + "/" + filename)
-        figure = createFigure(data)
+        figure = create_figure(data)
         if errorReceived == "True":         #Must check against string since we are getting errorReceived as a query parameter
             return render_template("scatterPlotWithError.html", image=figure)
         return render_template("scatterPlotDisplay.html", image=figure)
@@ -75,7 +75,7 @@ def performLinearRegression():
 
         data = da.parseData(UPLOAD_FOLDER + "/" + filename)     #TODO: Pass parsed data through? Doing this twice feels silly
         theta, cost = da.trainModel(data,learningRate,iterations)
-        figure = createFigure(data,theta)                       #TODO: Doing this a second time feels silly, too
+        figure = create_figure(data,theta)                       #TODO: Doing this a second time feels silly, too
         #Clean up the tmp folder
         if os.path.exists(UPLOAD_FOLDER + "/" + filename):
             os.remove(UPLOAD_FOLDER + "/" + filename)
